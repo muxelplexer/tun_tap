@@ -1,0 +1,13 @@
+Checks: >
+  performance-*,
+  modernize-*,
+  abseil-*,
+  google-*,
+  bugprone-*,
+  concurrency-*,
+  cppcoreguidelines-*
+  readability-*,
+  clang-analyzer-*,
+  misc-*,
+  -misc-include-cleaner,
+  -modernize-use-trailing-return-type,

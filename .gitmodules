@@ -1,0 +1,6 @@
+[submodule "ext/mhl"]
+	path = ext/mhl
+	url = ../mhl
+[submodule "ext/dotenv"]
+	path = ext/dotenv
+	url = ../dotenv
