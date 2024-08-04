@@ -29,7 +29,7 @@ std::optional<std::string> tap_dev::get_name() const noexcept try
 {
     return std::nullopt;
 }
-[[nodiscard]] std::pair<std::uint8_t*, std::size_t> tap_dev::read()
+[[nodiscard]] std::pair<std::uint8_t*, std::size_t> tap_dev::read() noexcept
 {
     auto nbytes = ::read(static_cast<int>(_fd), _buf.data(), _buf.max_size());
     return std::make_pair(_buf.data(), nbytes);

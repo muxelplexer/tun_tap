@@ -13,7 +13,7 @@ class tap_dev
 {
 public:
     [[nodiscard]] std::optional<std::string> get_name() const noexcept;
-    [[nodiscard]] std::pair<std::uint8_t*, std::size_t> read();
+    [[nodiscard]] std::pair<std::uint8_t*, std::size_t> read() noexcept;
 
     inline mhl::sys::fd& get_fd()
     {
