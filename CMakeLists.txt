@@ -9,6 +9,7 @@ add_subdirectory(ext/dotenv)
 add_executable(tun_tap 
     src/main.cpp
     src/tap_dev.cpp
+    src/ether/frame.cpp
 )
 
 target_include_directories(tun_tap PRIVATE

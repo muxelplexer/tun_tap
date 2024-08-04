@@ -11,9 +11,12 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+#include "mhl/error.hpp"
 #include "tap_dev.hpp"
 #include "dotenv/dotenv.hpp"
 #include "mhl/sys/netlink.hpp"
+
+#include "ether/frame.hpp"
 
 int main() try
 {
@@ -40,35 +43,18 @@ int main() try
     mhl::sys::net::netlink_sock nl_sock(NETLINK_ROUTE);
     auto nl_addr{mhl::sys::net::netlink_sock::create_sockaddr(RTMGRP_LINK | RTMGRP_IPV4_IFADDR)};
 
-    if (auto err = nl_sock.bind_sock(reinterpret_cast<sockaddr*>(&nl_addr)); err != std::nullopt)
-    {
-        std::println("FATAL ERROR: {}", *err);
-        return EXIT_FAILURE;
-    }
 
-    if (auto err = nl_sock.set_dev_ip(*tun_dev_name_opt, "10.10.10.1"); err != std::nullopt)
-    {
-        std::println("FATAL ERROR: {}", *err);
-        return EXIT_FAILURE;
-    }
-
-    if (auto err = nl_sock.set_link(*tun_dev_name_opt, true); err != std::nullopt)
-    {
-        std::println("FATAL ERROR: {}", *err);
-        return EXIT_FAILURE;
-    }
+    mhl::error::throw_err(nl_sock.bind_sock(reinterpret_cast<sockaddr*>(&nl_addr)));
+    mhl::error::throw_err(nl_sock.set_dev_ip(*tun_dev_name_opt, "10.10.01.1"));
+    mhl::error::throw_err(nl_sock.set_link(*tun_dev_name_opt, true));
 
     while(true)
     {
         auto [data, data_len] = tun_dev.read();
         if (data_len > 0)
         {
-            std::println("Got data!");
-            for (size_t j = 0; j < data_len; ++j)
-            {
-                std::print("{:02x} ", *(data + j));
-            }
-            std::print("\n");
+            auto frame = ether::frame::parse({data, data_len});
+            std::println("{}", frame);
         }
     }
 

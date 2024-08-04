@@ -9,6 +9,8 @@
 
 #include "mhl/sys/fd.hpp"
 
+#include "ether/frame.hpp"
+
 class tap_dev
 {
 public:
@@ -24,5 +26,5 @@ public:
 
 private:
     mhl::sys::fd _fd{::open("/dev/net/tun", O_RDWR)};
-    std::array<std::uint8_t, MTU_SIZE> _buf{};
+    std::array<std::uint8_t, MTU_SIZE + ether::frame_size> _buf{};
 };
