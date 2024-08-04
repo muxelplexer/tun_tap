@@ -5,8 +5,6 @@
 #include <optional>
 #include <print>
 #include <string>
-#include <stdexcept>
-
 #include <linux/if_tun.h>
 #include <net/if.h>
 #include <sys/ioctl.h>

@@ -1,19 +1,19 @@
-#include "mhl/sys/netlink.hpp"
-#include "dotenv/dotenv.hpp"
-#include "tap_dev.hpp"
-#include <cstdint>
 #include <cstdlib>
 #include <exception>
 #include <optional>
 #include <print>
-#include <stdexcept>
+#include <string>
 
-#include <fcntl.h>
 #include <linux/netlink.h>
 #include <linux/rtnetlink.h>
-#include <string>
 #include <sys/socket.h>
+
+#include <fcntl.h>
 #include <unistd.h>
+
+#include "tap_dev.hpp"
+#include "dotenv/dotenv.hpp"
+#include "mhl/sys/netlink.hpp"
 
 int main() try
 {
@@ -58,7 +58,6 @@ int main() try
         return EXIT_FAILURE;
     }
 
-    int i = 0;
     while(true)
     {
         auto [data, data_len] = tun_dev.read();
@@ -69,9 +68,8 @@ int main() try
             {
                 std::print("{:02x} ", *(data + j));
             }
+            std::print("\n");
         }
-
-        std::println("{}", i);
     }
 
     return EXIT_SUCCESS;
