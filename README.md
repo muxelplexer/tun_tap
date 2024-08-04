@@ -9,3 +9,10 @@ capability to it:
 ```sh
 sudo setcap cap_net_admin+ep build/tun_tap
 ```
+
+In GDB you will need to enter this command for it to run the executable directly
+instead of running it through bash:
+
+```gdb
+set startup-with-shell off
+```
