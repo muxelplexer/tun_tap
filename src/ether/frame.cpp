@@ -1,12 +1,9 @@
 #include "ether/frame.hpp"
+#include "ether/payload.hpp"
 #include "mhl/sys/net.hpp"
-#include <cstddef>
 #include <cstdint>
-#include <format>
 #include <print>
 #include <span>
-#include <stdexcept>
-#include <utility>
 
 namespace ether
 {
@@ -28,8 +25,6 @@ namespace ether
             net_cast.template operator()<uint32_t>(crc_pos.base())
         };
 
-        std::span<uint8_t> test{(type_pos+2).base(), crc_pos.base()};
-
-        return frame{src, dest, type, crc, test};
+        return frame{src, dest, type, crc, {(type_pos+2).base(), crc_pos.base()}};
     }
 }  // namespace ether

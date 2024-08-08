@@ -54,6 +54,7 @@ int main() try
         if (data_len > 0)
         {
             auto frame = ether::frame::parse({data, data_len});
+
             std::println("{}", frame);
         }
     }
