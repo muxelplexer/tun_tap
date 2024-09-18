@@ -21,6 +21,7 @@
 #include "ether/frame.hpp"
 
 namespace {
+    tap_dev tun_dev{};
     std::atomic<bool> should_quit{false};
 }
 
@@ -41,7 +42,6 @@ int main() try
         std::println("{}={}", env_var, dotenv::get_env(std::string(env_var)).value());
     }
 
-    tap_dev tun_dev{};
     auto tun_dev_name_opt = tun_dev.get_name();
     if (tun_dev_name_opt == std::nullopt)
     {
