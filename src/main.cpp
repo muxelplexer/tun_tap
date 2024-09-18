@@ -1,3 +1,5 @@
+#include <atomic>
+#include <csignal>
 #include <cstdlib>
 #include <exception>
 #include <optional>
@@ -18,8 +20,18 @@
 
 #include "ether/frame.hpp"
 
+namespace {
+    std::atomic<bool> should_quit{false};
+}
+
+void int_handler(int)
+{
+    should_quit.store(true);
+}
+
 int main() try
 {
+    std::signal(SIGINT, &int_handler);
     dotenv::load("../");
     auto dot_env_vars = dotenv::get_variables();
     for (const auto env_var : dot_env_vars)
@@ -48,7 +60,7 @@ int main() try
     mhl::error::throw_err(nl_sock.set_dev_ip(*tun_dev_name_opt, "10.10.01.1"));
     mhl::error::throw_err(nl_sock.set_link(*tun_dev_name_opt, true));
 
-    while(true)
+    while(!should_quit.load())
     {
         auto [data, data_len] = tun_dev.read();
         if (data_len > 0)
